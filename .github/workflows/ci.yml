@@ -1,0 +1,51 @@
+# CI — proves the demonstrations actually run, offline, on every push.
+#
+# This is the "eval gate as a unit test" pattern made real: the eval harness
+# runs in the same pipeline as the tests, and if its pass rate drops below the
+# threshold, run_evals.py exits non-zero and the whole build goes red.
+#
+# Everything here runs with NO API keys and NO network calls at test time
+# (the LLM-judge tier is stubbed), so CI is fully reproducible.
+
+name: ci
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:   # lets you run it manually from the Actions tab
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        # mcp = the official MCP Python SDK (needed by mcp/server.py + its test).
+        # pytest = test runner. No project-specific packages beyond these.
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "mcp>=1.0" pytest
+
+      # The eval tests and the MCP tests each import sibling modules by name
+      # (e.g. `import checks`, `import server`), so we run pytest from inside
+      # each directory to put it on the import path. Two clear, separate runs.
+      - name: Run eval harness tests
+        working-directory: evals
+        run: python -m pytest -v
+
+      - name: Run MCP server tests
+        working-directory: mcp
+        run: python -m pytest -v
+
+      # THE GATE. Runs the full eval suite and fails the build if the pass rate
+      # falls below the threshold — exactly like a failing unit test.
+      - name: Run the eval gate
+        working-directory: evals
+        run: python run_evals.py

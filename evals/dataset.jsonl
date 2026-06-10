@@ -1,0 +1,12 @@
+{"id": "ex-001", "claim": "The library opens at 9am on weekdays.", "source": "https://example.org/library/hours", "checked_date": "2026-01-15", "expected_verdict": "pass", "note": "well-formed, supported, recent"}
+{"id": "ex-002", "claim": "Widgets ship within 3 business days.", "source": "https://example.com/shipping-policy", "checked_date": "2026-02-01", "expected_verdict": "pass", "note": "well-formed and recent"}
+{"id": "ex-003", "claim": "The museum has free admission on Sundays.", "source": "https://example.org/museum/admission", "checked_date": "2025-11-20", "expected_verdict": "pass", "note": "supported, source present"}
+{"id": "ex-004", "claim": "The parking garage has 400 spaces.", "source": "https://example.net/parking/facts", "checked_date": "2026-01-30", "expected_verdict": "pass", "note": "well-formed"}
+{"id": "ex-005", "claim": "Annual membership costs 50 dollars.", "source": "https://example.org/membership", "checked_date": "2026-02-10", "expected_verdict": "pass", "note": "well-formed"}
+{"id": "ex-006", "claim": "The cafe serves breakfast until 11am.", "source": "https://example.com/cafe/menu", "checked_date": "2026-01-05", "expected_verdict": "pass", "note": "well-formed"}
+{"id": "ex-007", "claim": "The trail is 4 miles long.", "source": "", "checked_date": "2026-01-12", "expected_verdict": "fail", "note": "missing source -> deterministic fail"}
+{"id": "ex-008", "claim": "The pool is open year round.", "source": "not-a-real-url", "checked_date": "2026-01-18", "expected_verdict": "fail", "note": "source is not a valid URL -> deterministic fail"}
+{"id": "ex-009", "claim": "The store restocks every Monday.", "source": "https://example.org/store", "checked_date": "01-18-2026", "expected_verdict": "fail", "note": "date not ISO YYYY-MM-DD -> deterministic fail"}
+{"id": "ex-010", "claim": "", "source": "https://example.org/empty", "checked_date": "2026-01-22", "expected_verdict": "fail", "note": "empty claim -> deterministic fail"}
+{"id": "ex-011", "claim": "this thing is the absolute best guaranteed amazing miracle deal ever!!!", "source": "https://example.com/promo", "checked_date": "2026-02-03", "expected_verdict": "fail", "note": "well-formed but hype/unverifiable language -> rubric fail"}
+{"id": "ex-012", "claim": "The shuttle runs every 20 minutes during peak hours.", "source": "https://example.net/transit/shuttle", "checked_date": "2019-03-01", "expected_verdict": "fail", "note": "well-formed but stale (older than freshness window) -> rubric fail"}
